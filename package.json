@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint":"standard --fix"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/mhosan/apiqr/issues"
   },
-  "homepage": "https://github.com/mhosan/apiqr#readme"
+  "homepage": "https://github.com/mhosan/apiqr#readme",
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
 }

@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var subscripcionesSchema = new Schema({
-    fechaAlta: Date,
-    endpoint: String,
-    expirationTime: Date,
-    keys: {
-        p256dh: String,
-        auth: String
-    },
-    mail: String
+const subscripcionesSchema = new Schema({
+  fechaAlta: Date,
+  endpoint: String,
+  expirationTime: Date,
+  keys: {
+    p256dh: String,
+    auth: String
+  },
+  mail: String
 },
-    { versionKey: false }
-);
+{ versionKey: false }
+)
 
-module.exports = mongoose.model('Suscripciones', subscripcionesSchema);
+module.exports = mongoose.model('Suscripciones', subscripcionesSchema)

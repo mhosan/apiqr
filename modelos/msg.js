@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var msgSchema = new Schema({
-    title: String,
-    bodyMessage: String,
-    iconImage: String,
-    date: Date,
-    category: Number,
-    status: Number,
-    auth: String,
-    mail: String
+const msgSchema = new Schema({
+  title: String,
+  bodyMessage: String,
+  iconImage: String,
+  date: Date,
+  category: Number,
+  status: Number,
+  auth: String,
+  mail: String
 },
-    { versionKey: false }
-);
+{ versionKey: false }
+)
 
-module.exports = mongoose.model('MensajesNada', msgSchema);
+module.exports = mongoose.model('MensajesNada', msgSchema)
