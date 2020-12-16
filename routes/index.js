@@ -1,17 +1,18 @@
 const { Router } = require('express') // traer una parte de express
 const router = Router()
 const ctrlPagPpal = require('../controladores/ctrlPagPpal')
+const ctrlCobro = require('../controladores/ctrlCobro')
 
 // ---------------------------------------------------------------------
 // pagina principal de adm del servidor. Esta página probablemente
 // desaparezca
 // ---------------------------------------------------------------------
-router.get('/', ctrlPagPpal.getSubscripciones)
+router.get('/', ctrlPagPpal.get);
 
 // ---------------------------------------------------------------------
-// recibiendo (y persistiendo) subscripción
+// recibiendo un pago
 // ---------------------------------------------------------------------
-// router.post('/subscription', ctrlSubscripciones.postSubscripcion)
+router.post('/cobro', ctrlCobro.postCobro);
 
 // ---------------------------------------------------------------------
 // recibiendo y actualizando la subscripción. Se le agregan datos para
