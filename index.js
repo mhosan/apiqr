@@ -52,7 +52,7 @@ mongoose.connect(process.env.uriRemota, {
 })
   .then(() => {
     console.log('MongoDB Connected…')
-    const db = mongoose.connection
+    // const db = mongoose.connection
   })
   .catch(err => console.log(err))
 

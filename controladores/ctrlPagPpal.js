@@ -1,4 +1,4 @@
-const qrEsquema = require('../modelos/qr')
+// const qrEsquema = require('../modelos/qr')
 const ctrlPagPpal = {}
 
 // get subscripciones
