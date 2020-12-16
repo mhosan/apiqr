@@ -13,4 +13,4 @@ const qrSchema = new Schema({
   { versionKey: false }
 )
 
-module.exports = mongoose.model('cobros', msgSchema)
+module.exports = mongoose.model('cobros', qrSchema)
