@@ -1,16 +1,15 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const qrSchema = new Schema({
-  mailReceiver: String,
-  montoPesos: Number,
-  montoPeygold: Number,
-  montoCreditosPeygold: Number,
-  montoMultiplay: Number,
+  receiver: String,
+  monto: Number,
+  tipoTransaccion: Number,
   estado: Number,
-  fechaHora: Date
+  fechaOperacion: Date,
+  sender: String
 },
   { versionKey: false }
 )
 
-module.exports = mongoose.model('cobros', qrSchema)
+module.exports = mongoose.model('cobros', qrSchema);
