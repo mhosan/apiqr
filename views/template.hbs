@@ -1,27 +1,57 @@
 <html>
-
 <head>
     <title>título</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
-
 <body>
     <div class="container-fluid">
-        <p class="text-center h5 pt-2 pb-2">QR</p>
-        <div class="card" style="margin-left: auto; margin-right: auto; ">
+        {{!-- <p class="text-center h5 pt-2 pb-2">QR</p> --}}
+        <div class="card" style="margin-left: auto; margin-right: auto; margin-top: 10px;">
             <div class="card-header text-center h5">
                 Gestión de QR
                 <a class="nav-item nav-link" href="/sus">{{saludo}}</a>
             </div>
             <div class="card-body" style="margin-left:auto; margin-right:auto;">
-                
+                <div class="row ml-2 mr-2">
+                    {{!-- <div class="col mt-1 pr-1"> --}}
+                        {{!-- <p class="card-text " id="totalPush">Mensajes</p> --}}
+                        {{!-- </div> --}}
+                    {{!-- <div class="col"> --}}
+                        <div style="height: 300px; overflow: auto; ">
+                            <table class="table table-striped small table-sm table-borderless">
+                                <thead>
+                                    <tr style="text-align:center">
+                                        <th style="background-color: rgb(200,200,200);">Cobros</th>
+                                        <th>receiver</th>
+                                        <th>monto</th>
+                                        <th>tipo transacc.</th>
+                                        <th>estado</th>
+                                        <th>sender</th>
+                                        <th>fecha</th>
+                                    </tr>
+                                </thead>
+                                {{#each cobros}}
+                                <tr style="text-align:center">
+                                    <td></td>
+                                    <td>{{this.receiver}}</td>
+                                    <td>{{this.monto}}</td>
+                                    <td>{{this.tipoTransaccion}}</td>
+                                    <td>{{this.estado}}</td>
+                                    <td>{{this.sender}}</td>
+                                    <td>{{this.fecha}}</td>
+                                </tr>
+                                {{/each}}
+                            </table>
+                        </div>
+                        {{!--
+                    </div> --}}
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="card-footer text-muted text-center font-italic">
-        &copy;Desarrollos ..., todos los derechos reservandos.
-    </div>
-    {{!-- <script src="./main.js"></script> --}}
+        <div class="card-footer text-muted text-center font-italic">
+            &copy;Desarrollos ..., todos los derechos reservandos.
+        </div>
+        {{!--
+        <script src="./main.js"></script> --}}
 </body>
-
-
 </html>

@@ -7,8 +7,8 @@ const ctrlCobro = {}
 ctrlCobro.postCobro = async (req, res) => {
   let postError = "";
     const cantidadParametros = Object.keys(req.body).length;
-    if (!req.body.mail) {
-        postError = postError + " El Json no trae el elemento mail.";
+    if (!req.body.receiver) {
+        postError = postError + " El Json no trae el elemento receiver.";
     }
     if (!req.body.monto) {
         postError = postError + " El Json no trae el elemento monto.";
@@ -25,7 +25,7 @@ ctrlCobro.postCobro = async (req, res) => {
         return;
     }
   const nuevoCobro = new qrEsquema({
-    receiver: req.body.mail,
+    receiver: req.body.receiver,
     monto: req.body.monto,
     tipoTransaccion: req.body.tipoTransaccion,
     estado: req.body.estado,

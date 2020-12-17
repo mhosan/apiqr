@@ -7,7 +7,7 @@ const ctrlCobro = require('../controladores/ctrlCobro')
 // pagina principal de adm del servidor. Esta página probablemente
 // desaparezca
 // ---------------------------------------------------------------------
-router.get('/', ctrlPagPpal.get);
+router.get('/', ctrlPagPpal.getCobros);
 
 // ---------------------------------------------------------------------
 // recibiendo un pago
