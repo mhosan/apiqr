@@ -8,7 +8,7 @@ const transactionSchema = new Schema({
   { versionKey: false }
 )
 
-module.exports = mongoose.model('transacciones', transactionSchema);
+module.exports = mongoose.model('transaccionesTipo', transactionSchema);
 // 1 = pesos,
 // 2 = peygold,
 // 3 = creditos peygold,
