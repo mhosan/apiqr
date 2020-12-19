@@ -68,7 +68,6 @@ ctrlPagPpal.getCobros = async (req, res) => {
           }
           jsonCobros.push(elementoJson);
           i = i + 1;
-          //ver si es la ultima vuelta
           if (i === doc.length) {
             res.render('template', { cobros: jsonCobros })
           }
