@@ -2,6 +2,33 @@ const cobrosSchema = require('../modelos/qr')
 const estadosSchema = require('../modelos/estados');
 const transactionSchema = require('../modelos/transacType');
 const ctrlPagPpal = {}
+let arrayEstados = [];
+let arrayTransac = [];
+
+const cargaArrayEstados = () => {
+  return new Promise((resolve, reject) => {
+    estadosSchema.find().exec()
+      .then(estadoDB => {
+        estadoDB.forEach(element => {
+          arrayEstados.push(element)
+        });
+        resolve(arrayEstados)
+      })
+      .catch(err => { reject(err) })
+  })
+}
+const cargaArrayTransac = () => {
+  return new Promise((resolve, reject) => {
+    transactionSchema.find().exec()
+      .then(transacDB => {
+        transacDB.forEach(element => {
+          arrayTransac.push(element)
+        });
+        resolve(arrayTransac)
+      })
+      .catch(err => { reject(err) })
+  })
+}
 
 //---------------------------------------------------------------------
 // get 
@@ -9,45 +36,46 @@ const ctrlPagPpal = {}
 ctrlPagPpal.getCobros = async (req, res) => {
   jsonCobros = [];
   let i = 0;
-  cobrosSchema.find().sort({monto:1}).exec()  //
-    .then(doc => {
-      doc.forEach(element => {
-        let fechaMongo = new Date(element.fechaOperacionInicio);
-        fechaLocal = fechaMongo.toLocaleString('es-ES');
-        estadosSchema.find({ 'tipo': element.estado }).exec()
-          .then(estadoDB => {
-            const estadoDescripcion = estadoDB[0].descripcion;
-            transactionSchema.find({ 'tipo': element.tipoTransaccion }).exec()
-              .then(transacDB => {
-                const transacDescripcion = transacDB[0].descripcion;
-                const elementoJson = {
-                  receiver: element.receiver,
-                  monto: element.monto,
-                  tipoTransaccion: transacDescripcion,
-                  estado: estadoDescripcion,
-                  sender: element.sender,
-                  fecha: fechaLocal
-                }
-                jsonCobros.push(elementoJson);
-                i = i + 1;
-                //ver si es la ultima vuelta
-                if (i === doc.length) {
-                  console.log(jsonCobros)
-                  res.render('template', { cobros: jsonCobros })
-                }
-              })
-              .catch(err => {
-                console.log(`Error al buscar el tipo de transaccion: ${err}`)
-              })
-          })
-          .catch(err => {
-            console.log(`Error al buscar el estado: ${err}`)
-          })
-      })  //<---foreach
-    })  //<---then ppal.
-    .catch(err => {
-      console.log(`Error en la query sobre la tabla cobros: ${err}`);
+  cargaArrayEstados()
+    .then(arrayEst => {
+      return cargaArrayTransac()
     })
+    .then(arrayTransac => {
+      cobrosSchema.find({}, null, { sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+        if (err) console.log(err)
+        doc.forEach(element => {
+          let fechaMongo = new Date(element.fechaOperacionInicio);
+          fechaLocal = fechaMongo.toLocaleString('es-ES');
+          let estadoDescripcion;
+          let transacDescripcion;
+          arrayEstados.forEach(elementEst => {
+            if(elementEst.tipo === element.estado){
+              estadoDescripcion = elementEst.descripcion
+            }
+          });
+          arrayTransac.forEach(elementTran => {
+            if(elementTran.tipo === element.tipoTransaccion){
+              transacDescripcion = elementTran.descripcion
+            }
+          });
+          const elementoJson = {
+            receiver: element.receiver,
+            monto: element.monto,
+            tipoTransaccion: transacDescripcion,
+            estado: estadoDescripcion,
+            sender: element.sender,
+            fecha: fechaLocal
+          }
+          jsonCobros.push(elementoJson);
+          i = i + 1;
+          //ver si es la ultima vuelta
+          if (i === doc.length) {
+            res.render('template', { cobros: jsonCobros })
+          }
+        })
+      })
+    })
+    .catch(err => { console.log(err) })
 }
 
 module.exports = ctrlPagPpal
