@@ -54,13 +54,13 @@ ctrlPagPpal.getCobros = async (req, res) => {
             }
           });
           arrayTransac.forEach(elementTran => {
-            if(elementTran.tipo === element.tipoTransaccion){
+            if(elementTran.tipo === element.objmonto[0].tipoTransaccion){
               transacDescripcion = elementTran.descripcion
             }
           });
           const elementoJson = {
             receiver: element.receiver,
-            monto: element.monto,
+            monto: element.objmonto[0].monto,
             tipoTransaccion: transacDescripcion,
             estado: estadoDescripcion,
             sender: element.sender,

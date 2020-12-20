@@ -3,8 +3,10 @@ const Schema = mongoose.Schema;
 
 const qrSchema = new Schema({
   receiver: String,
-  monto: Number,
-  tipoTransaccion: Number,
+  objmonto: [{
+    monto: Number,
+    tipoTransaccion: Number
+  }],
   estado: Number,
   fechaOperacionInicio: Date,
   fechaOperacionFinal: Date,
