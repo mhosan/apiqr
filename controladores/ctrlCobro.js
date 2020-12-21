@@ -4,14 +4,28 @@ const ctrlCobro = {}
 //---------------------------------------------------------------------
 // get del cobro por qr
 //---------------------------------------------------------------------
-ctrlCobro.getCobro = (req, res) =>{
+ctrlCobro.getCobro = (req, res) => {
   const mailRecibido = req.params.mail
-  cobrosEsquema.find({receiver : mailRecibido, estado : 1},{_id : 0}).sort({fechaOperacionInicio : -1}).limit(1).exec()
-    .then(doc =>{
-      console.log(`Mail recibido: ${mailRecibido}, resultado: ${doc[0]}`);
-      res.status(200).json(doc[0]);
+  cobrosEsquema.find({ receiver: mailRecibido, estado: 1 }, { _id: 0 }).sort({ fechaOperacionInicio: -1 }).limit(1).exec()
+    .then(doc => {
+      if (doc[0] === undefined) {
+        cobrosEsquema.find({ receiver: mailRecibido }).exec()
+          .then((mailBuscado) =>{
+            if(mailBuscado[0] === undefined){
+              console.log(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);
+              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);      
+            } else {
+              console.log(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);
+              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);      
+            }
+          })
+          .catch(err => console.log(err));
+      } else {
+        console.log(`Mail recibido: ${mailRecibido}, resultado: ${doc[0]}`);
+        res.status(200).json(doc[0]);
+      }
     })
-    .catch(err =>{ 
+    .catch(err => {
       console.log(`Error: ${err}`);
       res.json(`Error ${err}`);
     })
