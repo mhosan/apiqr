@@ -48,7 +48,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 // ---------------------------------------------------------------------
 mongoose.connect(process.env.uriRemota, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 })
   .then(() => {
     console.log('MongoDB Connected…')

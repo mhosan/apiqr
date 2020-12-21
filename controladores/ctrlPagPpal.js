@@ -1,4 +1,4 @@
-const cobrosSchema = require('../modelos/qr')
+const cobrosSchema = require('../modelos/cobros')
 const estadosSchema = require('../modelos/estados');
 const transactionSchema = require('../modelos/transacType');
 const ctrlPagPpal = {}

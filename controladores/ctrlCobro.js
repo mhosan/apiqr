@@ -1,5 +1,21 @@
-const qrEsquema = require('../modelos/qr')
+const cobrosEsquema = require('../modelos/cobros')
 const ctrlCobro = {}
+
+//---------------------------------------------------------------------
+// get del cobro por qr
+//---------------------------------------------------------------------
+ctrlCobro.getCobro = (req, res) =>{
+  const mailRecibido = req.params.mail
+  cobrosEsquema.find({receiver : mailRecibido, estado : 1},{_id : 0}).sort({fechaOperacionInicio : -1}).limit(1).exec()
+    .then(doc =>{
+      console.log(`Mail recibido: ${mailRecibido}, resultado: ${doc[0]}`);
+      res.status(200).json(doc[0]);
+    })
+    .catch(err =>{ 
+      console.log(`Error: ${err}`);
+      res.json(`Error ${err}`);
+    })
+}
 
 //---------------------------------------------------------------------
 // post del cobro por qr
@@ -37,7 +53,7 @@ ctrlCobro.postCobro = async (req, res) => {
     };
     objMontoRecibido.push(objetoMonto);
   });
-  const nuevoCobro = new qrEsquema({
+  const nuevoCobro = new cobrosEsquema({
     receiver: req.body.receiver,
     objmonto: objMontoRecibido,
     estado: req.body.estado,

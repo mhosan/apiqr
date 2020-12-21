@@ -10,9 +10,14 @@ const ctrlCobro = require('../controladores/ctrlCobro')
 router.get('/', ctrlPagPpal.getCobros);
 
 // ---------------------------------------------------------------------
-// recibiendo un pago
+// recibiendo un cobro
 // ---------------------------------------------------------------------
 router.post('/cobro', ctrlCobro.postCobro);
+
+//---------------------------------------------------------------------
+// get cobro
+//---------------------------------------------------------------------
+router.get('/cobro/:mail', ctrlCobro.getCobro);
 
 // ---------------------------------------------------------------------
 // recibiendo y actualizando la subscripción. Se le agregan datos para
