@@ -10,7 +10,7 @@ const ctrlCobro = require('../controladores/ctrlCobro')
 router.get('/', ctrlPagPpal.getCobros);
 
 // ---------------------------------------------------------------------
-// recibiendo un cobro
+// post cobro
 // ---------------------------------------------------------------------
 router.post('/cobro', ctrlCobro.postCobro);
 
@@ -19,54 +19,9 @@ router.post('/cobro', ctrlCobro.postCobro);
 //---------------------------------------------------------------------
 router.get('/cobro/:mail', ctrlCobro.getCobro);
 
-// ---------------------------------------------------------------------
-// recibiendo y actualizando la subscripción. Se le agregan datos para
-// identificar al usuario, por ahora es el mail.
-// ---------------------------------------------------------------------
-// router.put('/', ctrlSubscripciones.putSubscripcion)
-
-// ---------------------------------------------------------------------
-// listar todas las subscripciones
-// ---------------------------------------------------------------------
-// router.get('/subscripciones', ctrlSubsc.getSubscripciones)
-
-// ---------------------------------------------------------------------
-// borrar suscripcion. se recibe como param el codigo auth
-// OJO, esto se ejecuta desde una llamada request a esta API
-// ---------------------------------------------------------------------
-// router.delete('/delete/:auth', ctrlSubscripciones.deleteSubscripcion)
-
-// ---------------------------------------------------------------------
-// borrar suscripcion. se recibe como param el codigo auth
-// OJO, esto se ejecuta desde el código main en el cliente!. NO es una
-// llamada API request
-// ---------------------------------------------------------------------
-// router.put('/borrar', ctrlSubscripciones.borrarSubscripcion)
-
-// ---------------------------------------------------------------------
-// mh, 24/11/20
-// Enviar mensaje,
-// recibe cuatro parametros:
-// 1 mail,          es el mail del destinatario. Entrar en la tabla suscrip
-//                  con el mail y buscar el identificador "auth" correspond.
-// 2 titulo,        es el titulo de la notificación push
-// 3 msg            es el texto de la notificación push
-// 4 idcat          es un int con la categoria de notificación push. Entrar en la tabla
-//                  categorias con el int y adjuntar a la notif el texto de
-//                  la categoria.
-// 5 status ?       Se habló de un item "status" pero por ahora no está definido.
-// ---------------------------------------------------------------------
-// router.post('/new-message', ctrlMsg.newMessage)
-
-// ---------------------------------------------------------------------
-// post new-message con sender
-// ---------------------------------------------------------------------
-// router.post('/new-message-sender', ctrlMsg.newMessageSender)
-
-// ---------------------------------------------------------------------
-// listar notificaciones a partir de un mail
-// { 'mail' : 'algo@gmail.com'}
-// ---------------------------------------------------------------------
-// router.get('/listado/:mail', ctrlMsg.listarNotificaciones)
+//---------------------------------------------------------------------
+// put cobro
+//---------------------------------------------------------------------
+router.put('/cobro', ctrlCobro.putCobro);
 
 module.exports = router

@@ -2,6 +2,42 @@ const cobrosEsquema = require('../modelos/cobros')
 const ctrlCobro = {}
 
 //---------------------------------------------------------------------
+// put del cobro por qr
+//---------------------------------------------------------------------
+ctrlCobro.putCobro = (req, res) => {
+  let postError = "";
+  if (!req.body.mail) {
+    postError = postError + " El Json no trae el elemento mail.";
+  }
+  if (!req.body.estado) {
+    postError = postError + " El Json no trae el elemento estado.";
+  }
+  if (!postError == "") {
+    console.log(postError);
+    res.status(420).json(`Error: ${postError}`);
+    return;
+  }
+  const mail = req.body.mail;
+  const nuevoEstado = req.body.estado;
+  //res.json(`mail recibido: ${mail}, nuevo estado: ${nuevoEstado}`);
+  const filter = { 'receiver': mail, 'estado' : 1 };
+  const actuEstado = { 'estado': nuevoEstado }
+
+  // cobrosEsquema.find(filter).sort({fechaOperacionInicio : -1}).exec()
+  // .then(doc => console.log(doc))
+  // .catch(err => console.log(err))
+  cobrosEsquema.updateOne(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+    if (err) {
+      console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
+      res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
+    } else {
+      console.log(`Actualización del estado del cobro ok!`);
+      res.status(200).json(`Actualización del estado del cobro ok!`);
+    }
+  })
+}
+
+//---------------------------------------------------------------------
 // get del cobro por qr
 //---------------------------------------------------------------------
 ctrlCobro.getCobro = (req, res) => {
@@ -10,13 +46,13 @@ ctrlCobro.getCobro = (req, res) => {
     .then(doc => {
       if (doc[0] === undefined) {
         cobrosEsquema.find({ receiver: mailRecibido }).exec()
-          .then((mailBuscado) =>{
-            if(mailBuscado[0] === undefined){
+          .then((mailBuscado) => {
+            if (mailBuscado[0] === undefined) {
               console.log(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);
-              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);      
+              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);
             } else {
               console.log(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);
-              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);      
+              res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);
             }
           })
           .catch(err => console.log(err));
