@@ -26,7 +26,8 @@ ctrlCobro.putCobro = (req, res) => {
   // cobrosEsquema.find(filter).sort({fechaOperacionInicio : -1}).exec()
   // .then(doc => console.log(doc))
   // .catch(err => console.log(err))
-  cobrosEsquema.updateOne(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+  //cobrosEsquema.updateOne(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+  cobrosEsquema.findOneAndUpdate(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
     if (err) {
       console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
       res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
