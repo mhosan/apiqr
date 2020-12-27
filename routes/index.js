@@ -1,7 +1,8 @@
-const { Router } = require('express') // traer una parte de express
-const router = Router()
-const ctrlPagPpal = require('../controladores/ctrlPagPpal')
-const ctrlCobro = require('../controladores/ctrlCobro')
+const { Router } = require('express'); // traer una parte de express
+const router = Router();
+const ctrlPagPpal = require('../controladores/ctrlPagPpal');
+const ctrlCobro = require('../controladores/ctrlCobro');
+const ctrlPago = require('../controladores/ctrlPago');
 
 // ---------------------------------------------------------------------
 // pagina principal de adm del servidor. Esta página probablemente
@@ -24,4 +25,8 @@ router.get('/cobro/:mail', ctrlCobro.getCobro);
 //---------------------------------------------------------------------
 router.put('/cobro', ctrlCobro.putCobro);
 
+//---------------------------------------------------------------------
+// put pago
+//---------------------------------------------------------------------
+router.put('/pago', ctrlPago.putCobro);
 module.exports = router

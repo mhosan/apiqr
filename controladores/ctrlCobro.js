@@ -88,12 +88,12 @@ ctrlCobro.getCobro = (req, res) => {
 //---------------------------------------------------------------------
 ctrlCobro.postCobro = async (req, res) => {
   let postError = "";
-  const objMontoCant = req.body.objmonto.length;
+  const objMontoCantElementos = req.body.objmonto.length;
   const cantidadParametros = Object.keys(req.body).length;
   if (!req.body.receiver) {
     postError = postError + " El Json no trae el elemento receiver.";
   }
-  if (objMontoCant === 0) {
+  if (objMontoCantElementos === 0) {
     postError = postError + " El Json no trae el elemento objmonto.";
   } else {
     if (!req.body.objmonto[0].monto) {
