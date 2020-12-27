@@ -49,12 +49,13 @@ ctrlPagPpal.getCobros = async (req, res) => {
           let estadoDescripcion;
           let transacDescripcion;
           arrayEstados.forEach(elementEst => {
-            if(elementEst.tipo === element.estado){
+            if (elementEst.tipo === element.estado) {
               estadoDescripcion = elementEst.descripcion
             }
           });
-          arrayTransac.forEach(elementTran => {
-            if(elementTran.tipo === element.objmonto[0].tipoTransaccion){
+          arrayTransac.forEach(elementTran => {   //<------------------------el arrayTransac se lee de la bd
+            //console.log(`Element: ${element.objmonto[0].tipoTransaccion}`)
+            if (elementTran.tipo === element.objmonto[0].tipoTransaccion) {  //<---element es la query
               transacDescripcion = elementTran.descripcion
             }
           });

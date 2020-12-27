@@ -1,5 +1,25 @@
+const { Mongoose } = require('mongoose');
 const cobrosEsquema = require('../modelos/cobros')
 const ctrlCobro = {}
+
+//---------------------------------------------------------------------
+// probando aggregates
+//---------------------------------------------------------------------
+ctrlCobro.putCobroAlter = (req, res) => {
+  const mail = req.body.mail;
+  const nuevoEstado = req.body.estado;
+  const filter = { 'receiver': mail };
+  const actuEstado = { 'estado': nuevoEstado }
+  cobrosEsquema.aggregate([
+    { $match: { receiver: { $eq: mail } } },
+    { $sort: { fechaOperacionInicio: -1 } },
+    { $limit: 1 }
+  ], (err, result) => {
+    if (err) console.log(err)
+    console.log(result[0]._id)
+  })
+}
+
 
 //---------------------------------------------------------------------
 // put del cobro por qr
@@ -19,20 +39,15 @@ ctrlCobro.putCobro = (req, res) => {
   }
   const mail = req.body.mail;
   const nuevoEstado = req.body.estado;
-  //res.json(`mail recibido: ${mail}, nuevo estado: ${nuevoEstado}`);
-  const filter = { 'receiver': mail, 'estado' : 1 };
+  const filter = { 'receiver': mail };
   const actuEstado = { 'estado': nuevoEstado }
 
-  // cobrosEsquema.find(filter).sort({fechaOperacionInicio : -1}).exec()
-  // .then(doc => console.log(doc))
-  // .catch(err => console.log(err))
-  //cobrosEsquema.updateOne(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
-  cobrosEsquema.findOneAndUpdate(filter, actuEstado, { upsert: true, sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+  cobrosEsquema.findOneAndUpdate(filter, actuEstado, { sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
     if (err) {
       console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
       res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
     } else {
-      console.log(`Actualización del estado del cobro ok!`);
+      console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
       res.status(200).json(`Actualización del estado del cobro ok!`);
     }
   })
