@@ -69,7 +69,7 @@ ctrlCobro.putCobro = (req, res) => {
       console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
       res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
     } else {
-      console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
+      console.log(`Actualización Ok del estado del cobro`);
       res.status(200).json(`Actualización del estado del cobro ok!`);
     }
   })
