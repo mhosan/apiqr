@@ -52,7 +52,7 @@ ctrlPago.putCobro = (req, res) => {
         return;
     }
 
-    const objetoMontoVacio = false;
+    let objetoMontoVacio = false;
     let objMontoRecibido = [];
     let nuevoObjetoMonto = [];
     let postError = "";
