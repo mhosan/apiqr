@@ -59,7 +59,7 @@ ctrlPago.putCobro = (req, res) => {
     let id = "";
     let sender = "";
     let fechaFinal = new Date();
-                                                                        //<--- ver que los param. contengan datos
+    //<--- ver que los param. contengan datos
     if (req.body.id === "") {
         postError = postError + "El id esta vacio."
     } else {
@@ -111,16 +111,20 @@ ctrlPago.putCobro = (req, res) => {
         nuevoObjetoMonto = objMontoRecibido;
     }
 
-    const actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2};
+    if (objetoMontoVacio) {                 //<---si el objeto monto vino vacio, no actualizar ese objeto. Actualizar el resto.
+        const actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
+    } else {
+        const actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
+    }
 
     cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
-      if (err) {
-        console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
-        res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
-      } else {
-        console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
-        res.status(200).json(`Actualización del estado del cobro ok!`);
-      }
+        if (err) {
+            console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
+            res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
+        } else {
+            console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
+            res.status(200).json(`Actualización del estado del cobro ok!`);
+        }
     })
 
 }
