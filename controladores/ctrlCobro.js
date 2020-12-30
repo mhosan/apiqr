@@ -22,27 +22,49 @@ ctrlCobro.putCobroAlter = (req, res) => {
 
 
 //---------------------------------------------------------------------
-// put del cobro por qr
+// put del cobro por qr. Recibe dos parametros: mail receiver y objmonto.
+// y actualiza solamente objmonto. No actualiza estado.
 //---------------------------------------------------------------------
 ctrlCobro.putCobro = (req, res) => {
   let postError = "";
+  let objMontoActual = [];
+  const objMontoCantElementos = req.body.objmonto.length;
   if (!req.body.mail) {
-    postError = postError + " El Json no trae el elemento mail.";
+    postError = postError + " El Json no trae el elemento mail receiver.";
   }
-  if (!req.body.estado) {
-    postError = postError + " El Json no trae el elemento estado.";
+  if (!objMontoCantElementos === 0) {
+    req.body.objmonto.forEach(elementoObjMonto => {
+      if (!elementoObjMonto.monto) {
+        postError = postError + " El Json no trae el elemento monto.";
+      }
+      if (!elementoObjMonto.tipoTransaccion) {
+        postError = postError + " El Json no trae el elemento tipoTransaccion.";
+      }
+    })
   }
   if (!postError == "") {
     console.log(postError);
     res.status(420).json(`Error: ${postError}`);
     return;
   }
+  if(Array.isArray(req.body.objmonto) && req.body.objmonto.length){  //<--el objeto objmonto no está vacio
+    req.body.objmonto.forEach(element => {
+      const objetoMonto = {
+        monto: element.monto,
+        tipoTransaccion: element.tipoTransaccion
+      };
+      objMontoActual.push(objetoMonto);
+    });
+  } else {
+    objMontoActual = [];
+  }
+    
   const mail = req.body.mail;
-  const nuevoEstado = req.body.estado;
-  const filter = { 'receiver': mail };
-  const actuEstado = { 'estado': nuevoEstado }
+  //const nuevoEstado = req.body.estado;
+  const filter = { 'receiver': mail, 'estado': 1 };
+  const actuObjMonto = { 'objmonto': objMontoActual }
 
-  cobrosEsquema.findOneAndUpdate(filter, actuEstado, { sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
+  cobrosEsquema.findOneAndUpdate(filter, actuObjMonto, { sort: { fechaOperacionInicio: -1 } }, (err, doc) => {
     if (err) {
       console.log(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
       res.status(404).json(`Error al actualizar el estado del cobro del mail ${mail}. El error es: ${err}`);
@@ -58,7 +80,8 @@ ctrlCobro.putCobro = (req, res) => {
 //---------------------------------------------------------------------
 ctrlCobro.getCobro = (req, res) => {
   const mailRecibido = req.params.mail
-  cobrosEsquema.find({ receiver: mailRecibido, estado: 1 }, { _id: 0 }).sort({ fechaOperacionInicio: -1 }).limit(1).exec()
+  //cobrosEsquema.find({ receiver: mailRecibido, estado: 1 }, { _id: 0 }).sort({ fechaOperacionInicio: -1 }).limit(1).exec()
+  cobrosEsquema.find({ receiver: mailRecibido, estado: 1 }).sort({ fechaOperacionInicio: -1 }).limit(1).exec()
     .then(doc => {
       if (doc[0] === undefined) {
         cobrosEsquema.find({ receiver: mailRecibido }).exec()
@@ -94,7 +117,7 @@ ctrlCobro.postCobro = async (req, res) => {
     postError = postError + " El Json no trae el elemento receiver.";
   }
   if (!objMontoCantElementos === 0) {
-    req.body.objmonto.forEach(elementoObjMonto =>{
+    req.body.objmonto.forEach(elementoObjMonto => {
       if (!elementoObjMonto.monto) {
         postError = postError + " El Json no trae el elemento monto.";
       }
