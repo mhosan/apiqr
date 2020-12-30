@@ -17,7 +17,7 @@ ctrlPago.getPago = (req, res) => {
                             res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: No se encuentra ese mail.`);
                         } else {
                             console.log(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);
-                            res.status(404).json(`Mail recibido: ${mailRecibido}, resultado: Mail no cumple condiciones.`);
+                            res.status(404).json(`Mail recibido: ${mailRecibido}, No tiene estado pendiente.`);
                         }
                     })
                     .catch(err => console.log(err));
