@@ -60,7 +60,7 @@ ctrlPago.putCobro = (req, res) => {
     let sender = "";
     let fechaFinal = new Date();
     //<--- ver que los param. contengan datos
-    if (req.body.id === "") {
+    if (req.body.id === "" || req.body.id === null) {
         postError = postError + "El id esta vacio."
     } else {
         id = req.body.id;
@@ -94,7 +94,7 @@ ctrlPago.putCobro = (req, res) => {
     }
     if (!postError == "") {
         console.log(postError);
-        res.status(420).json(`Error: ${postError}`);
+        res.status(400).json(`Error: ${postError}`);
         return;
     }
 
