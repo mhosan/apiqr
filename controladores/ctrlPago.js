@@ -111,10 +111,11 @@ ctrlPago.putCobro = (req, res) => {
         nuevoObjetoMonto = objMontoRecibido;
     }
 
+    let actualizar;
     if (objetoMontoVacio) {                 //<---si el objeto monto vino vacio, no actualizar ese objeto. Actualizar el resto.
-        const actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
+        actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
     } else {
-        const actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
+        actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
     }
 
     cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
