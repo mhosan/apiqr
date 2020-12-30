@@ -6,7 +6,9 @@ const ctrlPago = {}
 // put del pago por qr
 //---------------------------------------------------------------------
 ctrlPago.putCobro = (req, res) => {
-    //el body:
+    // ----------------------------------------------------
+    // parametros que recibe en el body:
+    // ----------------------------------------------------
     // mail : String,
     // sender : String,
     // objmonto : Array [
@@ -59,9 +61,9 @@ ctrlPago.putCobro = (req, res) => {
     //     res.status(200).json(`Actualización del estado del cobro ok!`);
     //   }
     // })
+
     const datosRecibidos = {mail, sender, objmonto}
     res.status(200).json(datosRecibidos);
-
 }
 
 module.exports = ctrlPago

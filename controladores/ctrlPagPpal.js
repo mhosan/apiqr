@@ -34,6 +34,9 @@ const cargaArrayTransac = () => {
 // get 
 //---------------------------------------------------------------------
 ctrlPagPpal.getCobros = async (req, res) => {
+  res.render('template', { mensaje: 'In construction. Sorry for the inconvenience, we are working for you' })
+  return;
+
   jsonCobros = [];
   let i = 0;
   cargaArrayEstados()
@@ -48,20 +51,28 @@ ctrlPagPpal.getCobros = async (req, res) => {
           fechaLocal = fechaMongo.toLocaleString('es-ES');
           let estadoDescripcion;
           let transacDescripcion;
+          let elementoMonto;
           arrayEstados.forEach(elementEst => {
             if (elementEst.tipo === element.estado) {
               estadoDescripcion = elementEst.descripcion
             }
           });
-          arrayTransac.forEach(elementTran => {   //<------------------------el arrayTransac se lee de la bd
-            //console.log(`Element: ${element.objmonto[0].tipoTransaccion}`)
-            if (elementTran.tipo === element.objmonto[0].tipoTransaccion) {  //<---element es la query
-              transacDescripcion = elementTran.descripcion
-            }
-          });
+          if(Array.isArray(element.objmonto) && element.objmonto.length){
+
+            arrayTransac.forEach(elementTran => {   //<------------------------el arrayTransac se lee de la bd, colecc transacciones
+              if (elementTran.tipo === element.objmonto[0].tipoTransaccion) {  //<---'element' es la query de la colecc. cobros
+                transacDescripcion = elementTran.descripcion
+                elementoMonto = element.objmonto[0].monto
+              }
+            });
+
+          } else {
+            transacDescripcion = '-'
+            elementoMonto = 0
+          }
           const elementoJson = {
             receiver: element.receiver,
-            monto: element.objmonto[0].monto,
+            monto: elementoMonto,
             tipoTransaccion: transacDescripcion,
             estado: estadoDescripcion,
             sender: element.sender,
