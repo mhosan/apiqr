@@ -61,12 +61,12 @@ ctrlPago.putPago = (req, res) => {
     let fechaFinal = new Date();
     //<--- ver que los param. contengan datos
     if (req.body.id === "" || req.body.id === null) {
-        postError = postError + "El id esta vacio."
+        postError = postError + "El id no es válido."
     } else {
         id = req.body.id;
     }
-    if (req.body.sender === "") {
-        postError = postError + "Falta el email del sender.";
+    if (req.body.sender === "" || req.body.sender === null) {
+        postError = postError + "Falta el email del sender o es null.";
     } else {
         sender = req.body.sender;
     }
@@ -80,7 +80,9 @@ ctrlPago.putPago = (req, res) => {
             }
         })
     } else {
-        objetoMontoVacio = true;
+        //objetoMontoVacio = true;
+        res.status(400).json('Objeto objmonto vacio');
+        return;
     }
     if (!req.body.estado) {
         postError = postError + "Falta el estado."
@@ -98,9 +100,9 @@ ctrlPago.putPago = (req, res) => {
         return;
     }
 
-    if (objetoMontoVacio) {
-        nuevoObjetoMonto = [];
-    } else {
+    //if (objetoMontoVacio) {
+    //    nuevoObjetoMonto = [];
+    //} else {
         req.body.objmonto.forEach(element => {
             const objetoMonto = {
                 monto: element.monto,
@@ -109,14 +111,14 @@ ctrlPago.putPago = (req, res) => {
             objMontoRecibido.push(objetoMonto);
         });
         nuevoObjetoMonto = objMontoRecibido;
-    }
+    //}
 
     let actualizar;
-    if (objetoMontoVacio) {                 //<---si el objeto monto vino vacio, no actualizar ese objeto. Actualizar el resto.
-        actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
-    } else {
+    //if (objetoMontoVacio) {                 //<---si el objeto monto vino vacio, no actualizar ese objeto. Actualizar el resto.
+    //    actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
+    //} else {
         actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
-    }
+    //}
 
     cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
         if (err) {
