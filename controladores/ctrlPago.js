@@ -87,7 +87,12 @@ ctrlPago.putPago = (req, res) => {
     if (!req.body.estado) {
         postError = postError + "Falta el estado."
     } else {
-        const nuevoEstado = req.body.estado;
+        if (typeof req.body.estado == 'number') {
+            const nuevoEstado = req.body.estado;
+        } else {
+            res.status(400).json('Estado no es un nro.');
+            return;
+        }
     }
     if (!req.body.fecha) {
         postError = postError + "Falta la fecha de finalización."
@@ -103,21 +108,21 @@ ctrlPago.putPago = (req, res) => {
     //if (objetoMontoVacio) {
     //    nuevoObjetoMonto = [];
     //} else {
-        req.body.objmonto.forEach(element => {
-            const objetoMonto = {
-                monto: element.monto,
-                tipoTransaccion: element.tipoTransaccion
-            };
-            objMontoRecibido.push(objetoMonto);
-        });
-        nuevoObjetoMonto = objMontoRecibido;
+    req.body.objmonto.forEach(element => {
+        const objetoMonto = {
+            monto: element.monto,
+            tipoTransaccion: element.tipoTransaccion
+        };
+        objMontoRecibido.push(objetoMonto);
+    });
+    nuevoObjetoMonto = objMontoRecibido;
     //}
 
     let actualizar;
     //if (objetoMontoVacio) {                 //<---si el objeto monto vino vacio, no actualizar ese objeto. Actualizar el resto.
     //    actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, estado: 2 };
     //} else {
-        actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
+    actualizar = { sender: sender, fechaOperacionFinal: fechaFinal, objmonto: nuevoObjetoMonto, estado: 2 };
     //}
 
     cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
