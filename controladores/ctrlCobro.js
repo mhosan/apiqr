@@ -59,17 +59,17 @@ const verificarObjMonto = (objetoMontoVerificar) => {
     }
     let objMontoActual = [];
     if (Array.isArray(objetoMontoVerificar) && objetoMontoVerificar.length) {  //<--el objeto objmonto no está vacio
-      verificacion = 'ok';
-      // req.body.objmonto.forEach(element => {
-      //   const objetoMonto = {
-      //     monto: element.monto,
-      //     tipoTransaccion: element.tipoTransaccion
-      //   };
-      //   objMontoActual.push(objetoMonto);
-      // });
+      objetoMontoVerificar.forEach(element => {
+        const cantidadElementos = Object.keys(element).length;
+        if(cantidadElementos != 2){
+          verificacion = 'Faltan elementos en el objeto objmonto'    
+        } 
+      });
+      if(verificacion === ""){
+        verificacion = 'ok';
+      }
     } else {
-      //console.log(`El objeto monto esta vacio`);
-      verificacion = "El objeto monto esta vacio";
+      verificacion = "El objeto monto no es válido";
     }
     if (verificacion === 'ok') {
       resolve(verificacion)
