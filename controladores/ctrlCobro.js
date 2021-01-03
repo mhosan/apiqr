@@ -124,7 +124,7 @@ ctrlCobro.putCobro = (req, res) => {
             ejecutarPut(req.body.mail, req.body.objmonto)
               .then(resultadoQuery => {
                 if(resultadoQuery === null){
-                  res.status(200).json(`No se actualizó ningún registro. Verificar que estado = pendiente`);
+                  res.status(400).json(`No se actualizó ningún registro. Verificar que estado = pendiente`);
                 } else {
                   res.status(200).json('Actualización ok!')
                 }
