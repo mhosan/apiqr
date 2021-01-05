@@ -61,11 +61,11 @@ const verificarObjMonto = (objetoMontoVerificar) => {
     if (Array.isArray(objetoMontoVerificar) && objetoMontoVerificar.length) {  //<--el objeto objmonto no está vacio
       objetoMontoVerificar.forEach(element => {
         const cantidadElementos = Object.keys(element).length;
-        if(cantidadElementos != 2){
-          verificacion = 'Faltan elementos en el objeto objmonto'    
-        } 
+        if (cantidadElementos != 2) {
+          verificacion = 'Faltan elementos en el objeto objmonto'
+        }
       });
-      if(verificacion === ""){
+      if (verificacion === "") {
         verificacion = 'ok';
       }
     } else {
@@ -103,27 +103,33 @@ const ejecutarPut = (mailRecibido, objetoMontoRecibido) => {
 // put para cancelar un pago. 
 // Recibe un solo parametro: _id
 //---------------------------------------------------------------------
-ctrlCobro.putCancelar = (req, res) =>{
+ctrlCobro.putCancelar = (req, res) => {
   let id = "";
   let actualizar;
-  if (!req.body._id) {
-    console.log(" Falta el _id.");
-    res.status(404).json(`Error: falta el _id`);
+  if (!req.body.id) {
+    console.log(" Falta el id.");
+    res.status(404).json(`Error: falta el id`);
     return;
-  } else {
-    id = req.body._id;
-    actualizar = { estado : 3};
   }
+  if (req.body.id === "" || req.body.id === null) {
+    console.log(" id inválido.");
+    res.status(404).json(`Error: id inválido`);
+    return;
+  }
+
+  id = req.body.id;
+  actualizar = { estado: 3 };
+
   //ejecutar la query
   cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
     if (err) {
-        console.log(`Error al actualizar el estado del cobro: ${err}`);
-        res.status(404).json(`Error al actualizar el estado del cobro: ${err}`);
+      console.log(`Error al actualizar el estado del cobro: ${err}`);
+      res.status(404).json(`Error al actualizar el estado del cobro: ${err}`);
     } else {
-        console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
-        res.status(200).json(`Actualización del estado del cobro ok!`);
+      console.log(`Actualización Ok del estado del cobro`);
+      res.status(200).json(`Actualización del estado del cobro ok!`);
     }
-})
+  })
 }
 
 //---------------------------------------------------------------------
@@ -151,7 +157,7 @@ ctrlCobro.putCobro = (req, res) => {
             console.log(`monto verif. ok: ${respuestaVerifMonto}`);
             ejecutarPut(req.body.mail, req.body.objmonto)
               .then(resultadoQuery => {
-                if(resultadoQuery === null){
+                if (resultadoQuery === null) {
                   res.status(400).json(`No se actualizó ningún registro. Verificar que estado = pendiente`);
                 } else {
                   res.status(200).json('Actualización ok!')
