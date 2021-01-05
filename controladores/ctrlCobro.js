@@ -23,7 +23,7 @@ ctrlCobro.putCobroAlter = (req, res) => {
 
 
 //---------------------------------------------------------------------
-// verificar el mail
+// verificar el mail (para el put del cobro)
 //---------------------------------------------------------------------
 const verificarMail = (mailVerificar) => {
   return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ const verificarMail = (mailVerificar) => {
 }
 
 //---------------------------------------------------------------------
-// verificar el objeto monto
+// verificar el objeto monto (para el put del cobro)
 //---------------------------------------------------------------------
 const verificarObjMonto = (objetoMontoVerificar) => {
   let verificacion = "";
@@ -80,7 +80,7 @@ const verificarObjMonto = (objetoMontoVerificar) => {
 }
 
 //---------------------------------------------------------------------
-// ejecutar la query (put) de actualización una vez verificados 
+// ejecutar la query (put del cobro) de actualización una vez verificados 
 // todos los parametros (mail y objmonto)
 //---------------------------------------------------------------------
 const ejecutarPut = (mailRecibido, objetoMontoRecibido) => {
@@ -100,8 +100,36 @@ const ejecutarPut = (mailRecibido, objetoMontoRecibido) => {
 }
 
 //---------------------------------------------------------------------
-// put del cobro por qr. Recibe dos parametros: mail receiver y objmonto.
-// y actualiza solamente objmonto. No actualiza estado.
+// put para cancelar un pago. 
+// Recibe un solo parametro: _id
+//---------------------------------------------------------------------
+ctrlCobro.putCancelar = (req, res) =>{
+  let id = "";
+  let actualizar;
+  if (!req.body._id) {
+    console.log(" Falta el _id.");
+    res.status(404).json(`Error: falta el _id`);
+    return;
+  } else {
+    id = req.body._id;
+    actualizar = { estado : 3};
+  }
+  //ejecutar la query
+  cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
+    if (err) {
+        console.log(`Error al actualizar el estado del cobro: ${err}`);
+        res.status(404).json(`Error al actualizar el estado del cobro: ${err}`);
+    } else {
+        console.log(`Actualización Ok del estado del cobro ${JSON.stringify(doc.sender)}`);
+        res.status(200).json(`Actualización del estado del cobro ok!`);
+    }
+})
+}
+
+//---------------------------------------------------------------------
+// put del cobro. 
+// Recibe dos parametros: mail receiver y objmonto.
+// Actualiza solamente objmonto. No actualiza estado.
 //---------------------------------------------------------------------
 ctrlCobro.putCobro = (req, res) => {
   if (!req.body.mail) {
@@ -148,8 +176,6 @@ ctrlCobro.putCobro = (req, res) => {
       console.log('error en la verificacion del mail')
     })
 }
-
-
 
 //---------------------------------------------------------------------
 // get del cobro por qr

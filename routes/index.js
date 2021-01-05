@@ -26,6 +26,11 @@ router.get('/cobro/:mail', ctrlCobro.getCobro);
 router.put('/cobro', ctrlCobro.putCobro);
 
 //---------------------------------------------------------------------
+// COBRO put para cancelar 
+//---------------------------------------------------------------------
+router.put('/cobro/cancelar', ctrlCobro.putCancelar);
+
+//---------------------------------------------------------------------
 // PAGO get
 //---------------------------------------------------------------------
 router.get('/pago/:mail', ctrlPago.getPago);
