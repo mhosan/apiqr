@@ -118,7 +118,7 @@ ctrlCobro.putCancelar = (req, res) => {
   }
 
   id = req.body.id;
-  actualizar = { estado: 3 };
+  actualizar = { estado: 3, fechaOperacionFinal: new Date()};
 
   //ejecutar la query
   cobrosEsquema.findByIdAndUpdate(id, actualizar, (err, doc) => {
